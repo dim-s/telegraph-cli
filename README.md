@@ -64,6 +64,9 @@ telegraph-publish --upload-image cover.png
 
 # publish without auto-uploading local images
 telegraph-publish draft.md --no-image-upload
+
+# publish with a specific author name (and optional link)
+telegraph-publish draft.md --author "Jane Doe" --author-url https://example.com
 ```
 
 On first publish the script creates a telegra.ph account and caches the
@@ -91,15 +94,24 @@ Tables are not natively supported by telegra.ph — the script renders each
 row as a compact bold-header paragraph. If you need real tables, telegra.ph
 is the wrong platform.
 
-## Environment
+## Author
 
-| Variable | Purpose |
+By default published pages have no author line. Provide one via CLI or env
+when you want it:
+
+| Source | Purpose |
 |---|---|
-| `TELEGRAPH_SHORT_NAME` | Short account name on first run (default: `Anonymous`) |
-| `TELEGRAPH_AUTHOR` | Display name shown under the article title |
+| `--author NAME` | Author name shown under the article title (per call) |
+| `--author-url URL` | Link wrapped around the author name (per call) |
+| `TELEGRAPH_AUTHOR` env | Fallback when `--author` is omitted |
+| `TELEGRAPH_AUTHOR_URL` env | Fallback when `--author-url` is omitted |
+| `TELEGRAPH_SHORT_NAME` env | Short account name on first run (default: `Anonymous`) |
 
-Both are baked into `account.json` on first publish — after that the env
-vars are no longer needed.
+CLI flags override env. Empty author is valid — telegra.ph simply renders
+the page without an author block.
+
+`TELEGRAPH_SHORT_NAME` is only used the very first time the script runs
+(when it creates the telegra.ph account); after that it's ignored.
 
 ## Known limits of telegra.ph (not bugs of this CLI)
 

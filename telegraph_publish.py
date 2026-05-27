@@ -283,7 +283,7 @@ def build_parser():
             "tables (rendered as one paragraph per row), images (as figure),\n"
             "**bold**, *italic*, `code`, [text](url).\n"
             "Account is cached in ~/.config/telegraph/account.json.\n"
-            "Env: TELEGRAPH_SHORT_NAME, TELEGRAPH_AUTHOR."
+            "Env: TELEGRAPH_SHORT_NAME, TELEGRAPH_AUTHOR, TELEGRAPH_AUTHOR_URL."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -296,6 +296,12 @@ def build_parser():
                    help="upload an image file and print its URL (standalone)")
     p.add_argument("--no-image-upload", action="store_true",
                    help="do not auto-upload local images referenced in md")
+    p.add_argument("--author", metavar="NAME",
+                   help="author name shown under the article title "
+                        "(default: empty; overrides TELEGRAPH_AUTHOR)")
+    p.add_argument("--author-url", metavar="URL",
+                   help="link wrapped around the author name "
+                        "(default: empty; overrides TELEGRAPH_AUTHOR_URL)")
     return p
 
 
@@ -324,13 +330,23 @@ def cmd_publish(args):
         return
 
     short_name = os.environ.get("TELEGRAPH_SHORT_NAME", "Anonymous")
-    author_name = os.environ.get("TELEGRAPH_AUTHOR", short_name)
+    author_name = (
+        args.author
+        if args.author is not None
+        else os.environ.get("TELEGRAPH_AUTHOR", "")
+    )
+    author_url = (
+        args.author_url
+        if args.author_url is not None
+        else os.environ.get("TELEGRAPH_AUTHOR_URL", "")
+    )
     access_token = ensure_account(short_name, author_name)
 
     params = {
         "access_token": access_token,
         "title": title,
         "author_name": author_name,
+        "author_url": author_url,
         "content": nodes,
         "return_content": "false",
     }

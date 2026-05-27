@@ -28,6 +28,7 @@ otherwise the pages you created become unmanageable.
 | `telegraph-publish <file.md> --edit <path-or-url>` | Update an existing page with new content |
 | `telegraph-publish --upload-image <file>` | Upload an image, print the URL |
 | `telegraph-publish <file.md> --no-image-upload` | Skip auto-uploading local `![…](…)` references |
+| `telegraph-publish <file.md> --author NAME [--author-url URL]` | Override the per-page author byline (optional, default empty) |
 | `telegraph-publish --help` | Full help with supported tags and env vars |
 
 ## What the parser supports
@@ -56,13 +57,20 @@ otherwise the pages you created become unmanageable.
   `~/.config/telegraph/account.json` is deleted, previously created pages
   become read-only.
 
+## Author byline
+
+By default published pages carry no author. To set one, pass `--author
+"NAME"` (and optionally `--author-url "URL"`) per call, or set
+`TELEGRAPH_AUTHOR` / `TELEGRAPH_AUTHOR_URL` env vars as a fallback. CLI
+flags override env. Empty author is valid — telegra.ph renders the page
+without an author block.
+
 ## Environment variables
 
-- `TELEGRAPH_SHORT_NAME` — short account name (only used on first run).
-- `TELEGRAPH_AUTHOR` — author name displayed under the page title.
-
-After first run both are baked into `account.json` and the env vars are no
-longer needed.
+- `TELEGRAPH_SHORT_NAME` — short account name (only used on first run,
+  baked into `account.json`).
+- `TELEGRAPH_AUTHOR` — fallback author name when `--author` is omitted.
+- `TELEGRAPH_AUTHOR_URL` — fallback author link when `--author-url` is omitted.
 
 ## Typical flow
 
