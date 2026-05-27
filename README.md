@@ -118,11 +118,38 @@ vars are no longer needed.
 For [Claude Code](https://claude.com/claude-code) users: the [`skill/`](./skill)
 directory contains a ready-to-use skill (`SKILL.md` + `setup.md`) so the
 agent can invoke `telegraph-publish` on demand and self-install when the
-CLI is missing. Wire it in:
+CLI is missing.
+
+Install — pick the line that matches your OS. No git clone, no symlinks
+needed (unless you want them).
+
+**macOS / Linux:**
+
+```bash
+mkdir -p ~/.claude/skills/telegraph && \
+curl -fsSL -o ~/.claude/skills/telegraph/SKILL.md https://raw.githubusercontent.com/dim-s/telegraph-cli/main/skill/SKILL.md && \
+curl -fsSL -o ~/.claude/skills/telegraph/setup.md  https://raw.githubusercontent.com/dim-s/telegraph-cli/main/skill/setup.md
+```
+
+**Windows (PowerShell):**
+
+```powershell
+$dir = "$env:USERPROFILE\.claude\skills\telegraph"
+New-Item -ItemType Directory -Force -Path $dir | Out-Null
+Invoke-WebRequest https://raw.githubusercontent.com/dim-s/telegraph-cli/main/skill/SKILL.md -OutFile "$dir\SKILL.md"
+Invoke-WebRequest https://raw.githubusercontent.com/dim-s/telegraph-cli/main/skill/setup.md  -OutFile "$dir\setup.md"
+```
+
+**Already cloned the repo? Symlink instead** — edits to the skill stay
+in sync with `git pull`:
 
 ```bash
 ln -s "$(pwd)/skill" ~/.claude/skills/telegraph
 ```
+
+After install, restart Claude Code (or `/reload`) so the new skill is
+indexed. The CLI itself installs automatically the first time the skill
+fires — `setup.md` guides the agent through it.
 
 ## License
 
