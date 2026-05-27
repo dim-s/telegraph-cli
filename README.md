@@ -113,6 +113,17 @@ vars are no longer needed.
   Delete `~/.config/telegraph/account.json` and your previous pages
   become read-only.
 
+## Claude Code skill
+
+For [Claude Code](https://claude.com/claude-code) users: the [`skill/`](./skill)
+directory contains a ready-to-use skill (`SKILL.md` + `setup.md`) so the
+agent can invoke `telegraph-publish` on demand and self-install when the
+CLI is missing. Wire it in:
+
+```bash
+ln -s "$(pwd)/skill" ~/.claude/skills/telegraph
+```
+
 ## License
 
 [MIT](./LICENSE) © 2026 Дмитрий Зайцев (Dmitry Zaytsev)
