@@ -1,22 +1,51 @@
 # telegraph-cli
 
-Markdown → [telegra.ph](https://telegra.ph) publisher. Single-file Python 3 CLI,
-stdlib only, no dependencies, no build step.
+Markdown → [telegra.ph](https://telegra.ph) publisher. Single-file Python 3
+CLI, **stdlib only**, no runtime dependencies, no build step.
 
 Publishes a Markdown file as a telegra.ph article, edits existing pages,
 uploads images, and prints the resulting URL.
 
 ## Install
 
-Drop the script anywhere on your `PATH`:
+Works on macOS, Linux, and Windows. Requires Python 3.8+.
 
 ```bash
-git clone https://github.com/dim-s/telegraph-cli.git ~/dev/telegraph-cli
-ln -s ~/dev/telegraph-cli/telegraph-publish ~/.local/bin/telegraph-publish
-chmod +x ~/.local/bin/telegraph-publish
+pip install git+https://github.com/dim-s/telegraph-cli.git
 ```
 
-Requires Python 3.8+ (uses only the standard library).
+That's it. `pip` creates a `telegraph-publish` executable on your PATH
+(including a proper `.exe` shim on Windows). No git clone, no symlinks, no
+shell-specific setup.
+
+To upgrade:
+
+```bash
+pip install -U git+https://github.com/dim-s/telegraph-cli.git
+```
+
+### Alternatives
+
+**With `pipx`** (isolated, recommended if you don't want to pollute your
+base Python):
+
+```bash
+pipx install git+https://github.com/dim-s/telegraph-cli.git
+```
+
+**With `uv tool`** (fastest):
+
+```bash
+uv tool install git+https://github.com/dim-s/telegraph-cli.git
+```
+
+**Manual** (just the script, no install):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dim-s/telegraph-cli/main/telegraph_publish.py \
+  -o ~/.local/bin/telegraph-publish
+chmod +x ~/.local/bin/telegraph-publish
+```
 
 ## Quick start
 
@@ -38,9 +67,10 @@ telegraph-publish draft.md --no-image-upload
 ```
 
 On first publish the script creates a telegra.ph account and caches the
-access token in `~/.config/telegraph/account.json`. **Keep that file** —
-without it the pages you created become unmanageable (telegra.ph has no
-"recover account" flow).
+access token in `~/.config/telegraph/account.json` (or
+`%APPDATA%\telegraph\account.json` on Windows — Python's `Path.home()`
+locates it for you). **Keep that file** — without it the pages you created
+become unmanageable (telegra.ph has no "recover account" flow).
 
 ## Markdown support
 
